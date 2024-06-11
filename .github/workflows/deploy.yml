@@ -25,4 +25,4 @@ jobs:
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
-          gcloud run deploy api-client --image europe-west9-docker.pkg.dev/$GOOGLE_PROJECT/api-client/image-api-client:latest --region  europe-west9 --platform managed --allow-unauthenticated
+          gcloud run deploy api-client --image europe-west9-docker.pkg.dev/$GOOGLE_PROJECT/api-client/image-api-client:sha256:cd5c08254ec7839f606bdb87a8519d4bd33c5527bc462bf2feeb8205bb166e46 --region  europe-west9 --platform managed --allow-unauthenticated
