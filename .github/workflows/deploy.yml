@@ -25,8 +25,8 @@ jobs:
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
           DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-          DATABASE_USER: ${{ secrets.DATABASE_HOST }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_HOST }}
+          DATABASE_USER: ${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
 
         run: |
           gcloud run deploy api-client --image europe-west9-docker.pkg.dev/$GOOGLE_PROJECT/api-client/image-api-client@sha256:cd5c08254ec7839f606bdb87a8519d4bd33c5527bc462bf2feeb8205bb166e46 --set-env-vars DATABASE_HOST=$DATABASE_HOST --set-env-vars DATABASE_USER=$DATABASE_USER --set-env-vars DATABASE_PASSWORD=$DATABASE_PASSWORD --region  europe-west9 --platform managed --allow-unauthenticated
