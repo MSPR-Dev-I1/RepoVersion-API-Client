@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - 'develop'
+      - 'preprod'
 
 permissions:
   contents: 'read'
@@ -31,4 +31,4 @@ jobs:
           CONNECTION_NAME: ${{ secrets.CONNECTION_NAME }}
 
         run: |
-          gcloud run deploy api-client-develop --image europe-west9-docker.pkg.dev/$GOOGLE_PROJECT/api-client/image-api-client@sha256:7f6461706adc412337f06302098b002c777bfc554f418bbb9a83533619d73668 --set-env-vars DATABASE_HOST=$DATABASE_HOST --set-env-vars DATABASE_USER=$DATABASE_USER --set-env-vars DATABASE_PASSWORD=$DATABASE_PASSWORD --set-env-vars INSTANCE_UNIX_SOCKET=$INSTANCE_UNIX_SOCKET --add-cloudsql-instances $CONNECTION_NAME  --region  europe-west9 --platform managed --allow-unauthenticated
+          gcloud run deploy api-client-preprod --image europe-west9-docker.pkg.dev/$GOOGLE_PROJECT/api-client/image-api-client@sha256:7f6461706adc412337f06302098b002c777bfc554f418bbb9a83533619d73668 --set-env-vars DATABASE_HOST=$DATABASE_HOST --set-env-vars DATABASE_USER=$DATABASE_USER --set-env-vars DATABASE_PASSWORD=$DATABASE_PASSWORD --set-env-vars INSTANCE_UNIX_SOCKET=$INSTANCE_UNIX_SOCKET --add-cloudsql-instances $CONNECTION_NAME  --region  europe-west9 --platform managed --allow-unauthenticated
