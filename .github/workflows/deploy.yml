@@ -3,32 +3,34 @@ name: Deploy
 on:
   push:
     branches:
-      - 'develop'
+    - develop
 
 permissions:
-  contents: 'read'
-  id-token: 'write'
+  contents: read
+  id-token: write
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
 
-      - name: code checkout
-        uses: actions/checkout@v4
+    - name: code checkout
+      uses: actions/checkout@v4
 
-      - name: install the gcloud cli
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+    - name: install the gcloud cli
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
-      - name: build and push the docker image
-        env:
-          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-          DATABASE_USER: ${{ secrets.DATABASE_USER }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          INSTANCE_UNIX_SOCKET: ${{ secrets.INSTANCE_UNIX_SOCKET }}
-          CONNECTION_NAME: ${{ secrets.CONNECTION_NAME }}
-
-        run: |
-          gcloud run deploy api-client-develop --image europe-west9-docker.pkg.dev/$GOOGLE_PROJECT/api-client/image-api-client@sha256:7f6461706adc412337f06302098b002c777bfc554f418bbb9a83533619d73668 --set-env-vars DATABASE_HOST=$DATABASE_HOST --set-env-vars DATABASE_USER=$DATABASE_USER --set-env-vars DATABASE_PASSWORD=$DATABASE_PASSWORD --set-env-vars INSTANCE_UNIX_SOCKET=$INSTANCE_UNIX_SOCKET --add-cloudsql-instances $CONNECTION_NAME  --region  europe-west9 --platform managed --allow-unauthenticated
+    - name: build and push the docker image
+      env:
+        GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+        DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+        DATABASE_USER: ${{ secrets.DATABASE_USER }}
+        DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+        INSTANCE_UNIX_SOCKET: ${{ secrets.INSTANCE_UNIX_SOCKET }}
+        CONNECTION_NAME: ${{ secrets.CONNECTION_NAME }}
+        AUTHURL: ${{ secrets.AUTHURL_dev }}
+        SERVICEKEY: ${{ secrets.SERVICEKEY }}
+        VERSION: 85c618d41e96b0370fe8eab1ec07160450e3d0273b070cd2bd18ff66846cb085
+      run: |-
+        gcloud run deploy api-client-develop --image europe-west9-docker.pkg.dev/$GOOGLE_PROJECT/api-client/image-api-client@sha256:$VERSION --set-env-vars GOOGLE_PROJECT=$GOOGLE_PROJECT --set-env-vars DATABASE_HOST=$DATABASE_HOST --set-env-vars DATABASE_USER=$DATABASE_USER --set-env-vars DATABASE_PASSWORD=$DATABASE_PASSWORD --set-env-vars INSTANCE_UNIX_SOCKET=$INSTANCE_UNIX_SOCKET --set-env-vars SERVICEKEY=$SERVICEKEY --set-env-vars AUTHURL=$AUTHURL --add-cloudsql-instances $CONNECTION_NAME --region europe-west9 --platform managed --allow-unauthenticated
